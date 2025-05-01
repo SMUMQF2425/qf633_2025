@@ -1,5 +1,6 @@
 #include <iostream>
 
+
 // Function that returns a pointer to an integer
 int* createInteger() {
     // Dynamically allocate memory for an integer
@@ -7,7 +8,7 @@ int* createInteger() {
     
     // Initialize the value
     *ptr = 42;
-
+    std::cout << ptr << std::endl;
     // Return the pointer
     return ptr;
 }
@@ -15,6 +16,7 @@ int* createInteger() {
 int main() {
     // Call the function and get the returned pointer
     int* myIntegerPtr = createInteger();
+    std::cout << myIntegerPtr << std::endl;
 
     // Access the value through the pointer
     std::cout << "Value: " << *myIntegerPtr << std::endl;

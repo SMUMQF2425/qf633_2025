@@ -1,9 +1,0 @@
-The size of int: 4 bytes
-The size of char: 1 bytes
-The size of bool: 1 bytes
-The size of short: 2 bytes
-The size of long: 8 bytes
-The size of unsigned long: 8 bytes
-The size of size_t: 8 bytes
-The size of float: 4 bytes
-The size of double: 8 bytes

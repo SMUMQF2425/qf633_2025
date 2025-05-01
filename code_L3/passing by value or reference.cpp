@@ -4,10 +4,14 @@ using namespace std;
 
 // Function that takes two integers by value and returns their sum
 int addByValue(int a, int b) {
+    cout << "a address: " << &a << endl;
+    cout << "b address: " << &b << endl;
     return a + b;
 };
 
 int addByReference(const int& a, const int& b) {
+    cout << "a address: " << &a << endl;
+    cout << "b address: " << &b << endl;
     return a + b;
 };
 
@@ -16,8 +20,18 @@ void addByReference2(int& a, int& b) {
     b += 3;
 };
 
+// Function that takes a constant reference to a string and prints it
+void printString(const std::string& str) {
+    cout << "str address: " << &str << endl;
+    std::cout << "Received string: " << str << std::endl;
+    // Uncommenting the line below would result in a compilation error
+    // str += " (modified)"; // Error: assignment of read-only reference 'str'
+}
+
+
 class Student {
-    public:
+
+public:
     //default constructor
     Student(){
         cout<< "calling student default construtor"<<endl;
@@ -61,15 +75,23 @@ private:
 };
 
 double getStudentGPA1(Student s1, Student s2) {
+    cout << "s1 address in GPA1 " << &s1 << endl;
+    cout << "s2 address in GPA1 " << &s2 << endl;
     return s1.getGpa() + s2.getGpa();
 }
 double getStudentGPA2(Student* s1, Student* s2) {
+    cout << "s1 address in GPA2 " << &s1 << endl;
+    cout << "s2 address in GPA2 " << &s2 << endl;
     return s1->getGpa() + s2->getGpa();
 }
 double getStudentGPA3(Student& s1,  Student& s2) {
+    cout << "s1 address in GPA3 " << &s1 << endl;
+    cout << "s2 address in GPA3 " << &s2 << endl;
     return s1.getGpa() + s2.getGpa();
 }
 double getStudentGPA4(const Student& s1, const Student& s2) {
+    cout << "s1 address in GPA4 " << &s1 << endl;
+    cout << "s2 address in GPA4 " << &s2 << endl;
     return s1.getGpa() + s2.getGpa();
 }
 
@@ -78,6 +100,8 @@ int main()
     //example 1
     if (false) {
         int x = 5, y = 7;
+        cout << "x address: " << &x << endl;
+        cout << "y address: " << &y << endl;
 
         // Passing values to the function by copy
         int result = addByValue(x, y);
@@ -96,12 +120,17 @@ int main()
         std::cout << "Result (Pass by reference2): " << std::endl;
         // The original values of x and y remain unchanged
         std::cout << "Original x: " << x << ", y: " << y << std::endl;
+
+        
     }
     
     //example 2, in case of object
     if(true) {
         Student s1 = Student("mike", 18, 4.0);
         Student s2 = Student("paul", 19, 4.5);
+        cout << "s1 address in main: " << &s1<< endl;
+        cout << "s2 address in main: " << &s2 << endl;
+
         Student s3(s1);
         double total;
         cout<<"calling func1"<<endl;
@@ -115,6 +144,12 @@ int main()
         total = getStudentGPA4(s1, s2);
         cout<< "Total GPA: " << total <<endl;
     }
+
+    //example 3 const ref exmaple.
+
+    std::string test = "this is a string";
+    cout << "test string address: " << &test << endl;
+    printString(test);
 
     return 0;
 }

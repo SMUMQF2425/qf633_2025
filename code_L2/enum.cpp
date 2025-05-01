@@ -11,15 +11,15 @@ enum Days {
     Saturday
 };
 
-// enum class Days2 {
-//     Sunday,
-//     Monday,
-//     Tuesday,
-//     Wednesday,
-//     Thursday,
-//     Friday,
-//     Saturday
-// };
+enum class Days2 {
+    Sunday,
+    Monday,
+    Tuesday,
+    Wednesday,
+    Thursday,
+    Friday,
+    Saturday
+};
 
 int main() {
     // Declare a variable of type Days
@@ -27,7 +27,7 @@ int main() {
         std::string Wednesday = "";
         std::cout<< Wednesday<<std::endl;
         }
-    auto today = Days::Friday;
+    auto today = Days2::Friday;
     int today = 4;
     
     // Switch statement using the enum values

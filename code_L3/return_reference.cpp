@@ -7,13 +7,15 @@ using namespace std;
 std::vector<int>& getVector() {
     // Declare a static vector (for the sake of example)
     static std::vector<int> myVector = {1, 2, 3, 4, 5};
-    // std::vector<int> myVector = {1, 2, 3, 4, 5};
+    //std::vector<int> myVector = {1, 2, 3, 4, 5};
+    cout << "in func: " << &myVector << endl;
 
     // Return a reference to the vector
     return myVector;
 };
 
 class test{
+
 public:
     int x;
 };
@@ -24,29 +26,31 @@ const test& getTestRef(const test& t) {
 
 int main() {
     // Call the function and get the returned reference
-    std::vector<int>& vecRef = getVector();
+    std::vector<int>& vecRef = getVector();    
 
     // Modify the vector through the reference
     vecRef.push_back(6);
-
+    
     // Print the modified vector
     for (int value : vecRef) {
-        std::cout << value << " ";
+        std::cout << value << endl;
     }
-    std::cout << std::endl;
+    cout << "in main: " << &vecRef << endl;
 
     //tricky example
     if (1) {
         test* t1 = new test();
-        test t2 = test();
-        cout<<&t2<<endl;
-        t2.x=15;
+        cout << "t1 address: " << &t1 << endl;
         t1->x = 10;
+        test t2 = test();
+        t2.x = 15;
+        cout << "t2 address: " << &t2 << endl;
         auto t_ref = getTestRef(t2);
+        cout << "t_ref address: " << &t_ref << endl;
         cout << t_ref.x <<endl;
         t_ref.x = 20;
-        cout << "pointer t1 x: "<< t2.x <<endl;
-        cout << "t1_ref x: " << t_ref.x <<endl;
+        cout << "t2.x: "<< t2.x <<endl;
+        cout << "tref.x: " << t_ref.x <<endl;
         delete t1;
     }
 

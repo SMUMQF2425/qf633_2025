@@ -3,6 +3,7 @@
 using namespace std;
 int main() {
 
+    //example of pointer
     if (0) {
         // Declare a variable
     int number = 42;
@@ -22,29 +23,60 @@ int main() {
 
     }
     
-    if (1) {
- 
-    // Declare a variable
-    int number = 42;
+    //example of reference
+    if (0) {
+    
+        // Declare a variable
+        int number = 42;
 
-    // Declare a reference to an integer and initialize it with the variable 'number'
-    int& referenceToNumber = number;
+        // Declare a reference to an integer and initialize it with the variable 'number'
+        int& referenceToNumber = number;
 
-    // Display the value of 'number' and the value through the reference
-    std::cout << "Value of 'number': " << number << std::endl;
-    std::cout << "Value through the reference: " << referenceToNumber << std::endl;
+        // Display the value of 'number' and the value through the reference
+        std::cout << "Value of 'number': " << number << std::endl;
+        std::cout << "Address of number: " << &number << std::endl;
+        std::cout << "Value through the reference: " << referenceToNumber << std::endl;
+        std::cout << "Address of the reference: " << &referenceToNumber << std::endl;
 
-    // Modify the value through the reference
-    referenceToNumber = 99;
+        // Modify the value through the reference
+        referenceToNumber = 99;
+       
+        // Display the modified value of 'number'
+        std::cout << "Modified value of 'number': " << number << std::endl;
 
-    // Display the modified value of 'number'
-    std::cout << "Modified value of 'number': " << number << std::endl;
     }
     
     //pointer vs reference
-    if(0){
+    if(1){
+        // re-assign reference to another variable leads to error
+        int num = 40;
+        int otherNum = 20;
+        std::cout << "address of number: " << &num << std::endl;
+        std::cout << "address of otherNum: " << &otherNum << std::endl;
+        int& referenceToNumber = num;
+        std::cout << "address of reference: " << &referenceToNumber << std::endl;
 
+        referenceToNumber = otherNum;
+        std::cout << "address of reference: " << &referenceToNumber << std::endl;
+        referenceToNumber = 15;
+        std::cout << "Modified value of 'number': " << num << std::endl;
+        otherNum = referenceToNumber;
+        std::cout << "Modified value of 'other number': " << otherNum << std::endl;
 
+        referenceToNumber = otherNum;
+        std::cout << "address of reference: " << &referenceToNumber << std::endl;
+
+        int* ptr = &num;
+        
+        *ptr = 25;
+        std::cout << "Modified value of 'number': " << num << std::endl;
+        std::cout << "address of 'number': " << ptr << std::endl;
+        ptr++;
+        std::cout << "Modified address of ptr: " << ptr << std::endl;
+        std::cout << "Modified value of ptr: " << *ptr << std::endl;
+        ptr = &otherNum;
+        std::cout << "Modified address of ptr: " << ptr << std::endl;
+        
     }
 
     return 0;

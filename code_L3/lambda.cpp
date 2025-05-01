@@ -4,8 +4,8 @@
 
 int main() {
     // Example 1: Lambda expression for a simple addition function
-    auto add = [](int a, int b) { return a + b; };
-
+    int x, y, z;
+    auto add = [&](int a, int b) { return a + b; };
     std::cout << "Sum: " << add(3, 4) << std::endl;
 
     // Example 2: Lambda expression for a predicate in a standard algorithm
