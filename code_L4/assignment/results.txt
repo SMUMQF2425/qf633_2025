@@ -1,7 +1,0 @@
-Trade ID    Trade Info                         Present Value
-------------------------------------------------------------
-1           Notional: 100000, Strike: 90, Call 1336830.73
-2           Notional: 3000, Strike: 105, Call  39741.51
-3           Notional: 2000, Strike: 105, Put   11129.22
-4           Notional: 15000, Strike: 98, Put   107179.64
-5           Notional: 15000, Strike: 101, Call 82894.26
