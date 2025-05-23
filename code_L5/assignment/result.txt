@@ -1,0 +1,7 @@
+SwapTrade: 95146.7
+SwapTrade: -735591
+BondTrade: 499875
+TreeProduct: 652
+TreeProduct: 1.32199e-06
+TreeProduct: 652
+TreeProduct: 48
