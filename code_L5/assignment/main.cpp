@@ -4,6 +4,7 @@
 #include <fstream>
 #include <ctime>
 #include <chrono>
+#include <memory>
 
 #include "Market.h"
 #include "Pricer.h"
@@ -11,6 +12,7 @@
 #include "Bond.h"
 #include "Swap.h"
 #include "AmericanTrade.h"
+#include "TradeFactory.h"
 
 using namespace std;
 
@@ -159,10 +161,15 @@ int main()
 	// task 2, create a portfolio of bond, swap, european option, american option
 	// for each time, at least should have long / short, different tenor or expiry, different underlying
 	// totally no less than 16 trades
-	// Load trades from trade.txt
+
+	// Use smart pointers and factories
+	vector<shared_ptr<Trade>> myPortfolio;
+	auto lFactory = make_unique<LinearTradeFactory>();
+	auto oFactory = make_unique<OptionTradeFactory>();
+
+	// Load trades from trade.txt using factories and setters
 	std::ifstream tradeFile("trade.txt");
 	std::string line;
-	std::vector<Trade *> myPortfolio;
 	getline(tradeFile, line); // skip header
 	while (getline(tradeFile, line))
 	{
@@ -187,31 +194,67 @@ int main()
 
 		if (type == "bond")
 		{
-			myPortfolio.push_back(new Bond(instrument, trade_dt, start_dt, end_dt, notional, int(1.0 / freq), rate));
+			auto bond = lFactory->createTrade("bond", trade_dt, end_dt);
+			auto bondPtr = dynamic_pointer_cast<Bond>(bond);
+			if (bondPtr)
+			{
+				bondPtr->setBondName(instrument);
+				bondPtr->setNotional(notional);
+				bondPtr->setTradePrice(rate);
+				bondPtr->setFrequency(int(1.0 / freq));
+				bondPtr->setStartDate(start_dt);
+				bondPtr->setEndDate(end_dt);
+				myPortfolio.push_back(bond);
+			}
 		}
 		else if (type == "swap")
 		{
-			myPortfolio.push_back(new Swap(trade_dt, start_dt, end_dt, notional, rate, int(1.0 / freq)));
+			auto swap = lFactory->createTrade("swap", trade_dt, end_dt);
+			auto swapPtr = dynamic_pointer_cast<Swap>(swap);
+			if (swapPtr)
+			{
+				swapPtr->setNotional(notional);
+				swapPtr->setRate(rate);
+				swapPtr->setFrequency(int(1.0 / freq));
+				swapPtr->setStartDate(start_dt);
+				swapPtr->setEndDate(end_dt);
+				myPortfolio.push_back(swap);
+			}
 		}
 		else if (type == "european")
 		{
-			OptionType optType = (option == "call") ? Call : Put;
-			myPortfolio.push_back(new EuropeanOption(optType, strike, end_dt, instrument));
+			auto eoption = oFactory->createTrade("european", trade_dt, end_dt);
+			auto eOpt = dynamic_pointer_cast<EuropeanOption>(eoption);
+			if (eOpt)
+			{
+				eOpt->setStrike(strike);
+				eOpt->setOptionType((option == "call") ? Call : Put);
+				eOpt->setUnderlying(instrument);
+				eOpt->setExpiry(end_dt);
+				myPortfolio.push_back(eoption);
+			}
 		}
 		else if (type == "american")
 		{
-			OptionType optType = (option == "call") ? Call : Put;
-			myPortfolio.push_back(new AmericanOption(optType, strike, end_dt, instrument));
+			auto aoption = oFactory->createTrade("american", trade_dt, end_dt);
+			auto aOpt = dynamic_pointer_cast<AmericanOption>(aoption);
+			if (aOpt)
+			{
+				aOpt->setStrike(strike);
+				aOpt->setOptionType((option == "call") ? Call : Put);
+				aOpt->setUnderlying(instrument);
+				aOpt->setExpiry(end_dt);
+				myPortfolio.push_back(aoption);
+			}
 		}
 	}
 
-	// task 3, creat a pricer and price the portfolio, output the pricing result of each deal.
-	Pricer *treePricer = new CRRBinomialTreePricer(50);
-	// Price and output results
+	// task 3, create a pricer and price the portfolio, output the pricing result of each deal.
+	auto treePricer = make_unique<CRRBinomialTreePricer>(50);
 	std::ofstream out("result.txt");
-	for (auto trade : myPortfolio)
+	for (auto &trade : myPortfolio)
 	{
-		double pv = treePricer->Price(mkt1, trade);
+		double pv = treePricer->Price(mkt1, trade.get());
 		out << trade->getType() << ": " << pv << std::endl;
 	}
 	out.close();

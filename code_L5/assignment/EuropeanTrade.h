@@ -17,6 +17,10 @@ public:
 	virtual const Date &GetExpiry() const { return expiryDate; }
 	virtual double ValueAtNode(double S, double t, double continuation) const { return continuation; }
 	std::string getUnderlying() const { return underlying; }
+	inline void setStrike(double _strike) { strike = _strike; }
+	inline void setOptionType(OptionType type) { optType = type; }
+	inline void setUnderlying(const std::string& name) { underlying = name; }
+	inline void setExpiry(const Date& d) { expiryDate = d; }
 
 protected:
 	OptionType optType;

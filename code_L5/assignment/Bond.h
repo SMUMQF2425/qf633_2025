@@ -23,6 +23,12 @@ public:
 	}
 
 	inline std::string getBondName() const { return bondName; } // implement this
+	inline void setBondName(const std::string& name) { bondName = name; }
+	inline void setNotional(double notional) { bondNotional = notional; }
+	inline void setTradePrice(double price) { tradePrice = price; }
+	inline void setFrequency(int freq) { frequecy = freq; }
+	inline void setStartDate(const Date& d) { startDate = d; }
+	inline void setEndDate(const Date& d) { endDate = d; }
 
 private:
 	std::string bondName;

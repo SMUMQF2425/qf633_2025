@@ -19,6 +19,11 @@ public:
 		double annuity = getAnnuity();
 		return annuity * (tradeRate - marketRate);
 	}
+	inline void setNotional(double notional) { swapNotional = notional; }
+	inline void setRate(double rate) { tradeRate = rate; }
+	inline void setFrequency(int freq) { frequency = freq; }
+	inline void setStartDate(const Date& d) { startDate = d; }
+	inline void setEndDate(const Date& d) { endDate = d; }
 
 private:
 	Date startDate;
