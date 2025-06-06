@@ -5,3 +5,8 @@ TreeProduct: 652
 TreeProduct: 1.32199e-06
 TreeProduct: 652
 TreeProduct: 48
+BondTrade (2Y, 100k, 2.5%, 101.5): -1500
+SwapTrade (5Y, 1M, 4.5%): 22432.8
+EuropeanCall (6M, 5% ITM, Tree): 60.4358
+EuropeanCall (6M, 5% ITM, Black): 52.2956
+AmericanCall (6M, 5% ITM, Tree): 60.4358

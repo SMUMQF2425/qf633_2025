@@ -257,6 +257,99 @@ int main()
 		double pv = treePricer->Price(mkt1, trade.get());
 		out << trade->getType() << ": " << pv << std::endl;
 	}
+
+	// =========================
+	// Task 3: Bond NPV Example
+	// =========================
+	{
+		// Pick any bond name from bondPrice.txt, e.g., "US912828U816"
+		std::string bondName = "US912828U816";
+		Date today = valueDate;
+		Date maturity = today;
+		maturity.year += 2;
+		auto bond = std::make_shared<Bond>(
+			bondName, today, today, maturity, 100000, 2, 101.5);
+		bond->setCoupon(0.025);
+
+		double bondNPV = treePricer->Price(mkt1, bond.get());
+		out << "BondTrade (2Y, 100k, 2.5%, 101.5): " << bondNPV << std::endl;
+	}
+
+	// =========================
+	// Task 4: Swap NPV Example
+	// =========================
+	{
+		Date today = valueDate;
+		Date maturity = today;
+		maturity.year += 5;
+		auto swap = std::make_shared<Swap>(
+			today, today, maturity, 1000000, 0.045, 2);
+
+		double swapNPV = treePricer->Price(mkt1, swap.get());
+		out << "SwapTrade (5Y, 1M, 4.5%): " << swapNPV << std::endl;
+	}
+
+	// =========================
+	// Task 5: European Call Option NPV (6M, 5% ITM)
+	// =========================
+	{
+		std::string stockName = "APPL"; // or any from stockPrice.txt
+		double spot = mkt1.getStockPrice(stockName);
+		Date today = valueDate;
+		Date expiry = today;
+		expiry.month += 6;
+		if (expiry.month > 12)
+		{
+			expiry.year += 1;
+			expiry.month -= 12;
+		}
+		double strike = spot * 0.95; // 5% ITM
+
+		auto euroCall = std::make_shared<EuropeanOption>();
+		euroCall->setOptionType(Call);
+		euroCall->setUnderlying(stockName);
+		euroCall->setStrike(strike);
+		euroCall->setExpiry(expiry);
+
+		double euroNPV = treePricer->Price(mkt1, euroCall.get());
+		out << "EuropeanCall (6M, 5% ITM, Tree): " << euroNPV << std::endl;
+
+		// Black-Scholes price
+		double vol = mkt1.getVolCurve(stockName).getVol(expiry);
+		double rate = mkt1.getCurve("USD").getRate(expiry); // adjust curve name as needed
+		double T = expiry - today;
+		// Black-Scholes formula
+		double d1 = (log(spot / strike) + (rate + 0.5 * vol * vol) * T) / (vol * sqrt(T));
+		double d2 = d1 - vol * sqrt(T);
+		auto norm_cdf = [](double x)
+		{ return 0.5 * erfc(-x / sqrt(2)); };
+		double bsPrice = spot * norm_cdf(d1) - strike * exp(-rate * T) * norm_cdf(d2);
+		out << "EuropeanCall (6M, 5% ITM, Black): " << bsPrice << std::endl;
+	}
+
+	// =========================
+	// Task 6: American Call Option NPV (6M, 5% ITM)
+	// =========================
+	{
+		std::string stockName = "APPL";
+		double spot = mkt1.getStockPrice(stockName);
+		Date today = valueDate;
+		Date expiry = today;
+		expiry.month += 6;
+		if (expiry.month > 12)
+		{
+			expiry.year += 1;
+			expiry.month -= 12;
+		}
+		double strike = spot * 0.95; // 5% ITM
+
+		auto amerCall = std::make_shared<AmericanOption>(
+			Call, strike, expiry, stockName);
+
+		double amerNPV = treePricer->Price(mkt1, amerCall.get());
+		out << "AmericanCall (6M, 5% ITM, Tree): " << amerNPV << std::endl;
+	}
+
 	out.close();
 
 	// task 4, analyzing pricing result
