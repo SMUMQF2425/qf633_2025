@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/david/Documents/GitHub/smu_teaching/Cplusplus/src/code_L9/sqlite/sqlite_test2'
+relocations:     []
+...
